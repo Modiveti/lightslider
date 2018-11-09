@@ -223,6 +223,46 @@
 }
 /* vertical */
 
+/* hybrid */
+.lSSlideOuter.hybrid {
+    position: relative;
+}
+/* .lSSlideOuter.hybrid.noPager {
+    padding-right: 0px !important;
+} */
+.lSSlideOuter.hybrid .lSGallery {
+    position: absolute !important;
+    left: 0;
+    top: 0;
+}
+.lSSlideOuter.hybrid .lslide img {
+    width: 100%;
+}
+.lSSlideOuter.hybrid .lSPager img {
+    width: 100%; 
+}
+/* .lSSlideOuter.hybrid .lightSlider > * {
+    width: 100% !important;
+    max-width: none !important;
+} */
+
+/* hybrid controlls */
+/* .lSSlideOuter.vertical .lSAction > a {
+    left: 50%;
+    margin-left: -14px;
+    margin-top: 0;
+}
+.lSSlideOuter.vertical .lSAction > .lSNext {
+    background-position: 31px -31px;
+    bottom: 10px;
+    top: auto;
+}
+.lSSlideOuter.vertical .lSAction > .lSPrev {
+    background-position: 0 -31px;
+    bottom: auto;
+    top: 10px;
+} */
+/* hybrid */
 
 /* Rtl */
 .lSSlideOuter.lSrtl {
