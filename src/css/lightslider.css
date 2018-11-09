@@ -232,6 +232,12 @@
     left: 0;
     top: 0;
 }
+.lSSlideOuter.hybrid .lslide img {
+    width: 100%;
+}
+.lSSlideOuter.hybrid .lSPager img {
+    width: 100%; 
+}
 /* .lSSlideOuter.hybrid .lightSlider > * {
     width: 100% !important;
     max-width: none !important;

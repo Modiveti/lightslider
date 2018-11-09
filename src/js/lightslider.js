@@ -25,7 +25,7 @@
         vertical: false,
         verticalHeight: 500,
         hybrid: false,
-        hybridHeight: 500,
+        hybridWidth: 500,
         vThumbWidth: 100,
         thumbItem: 10,
         pager: true,
@@ -242,8 +242,8 @@
                 } 
                 else if(settings.hybrid) {
                     $slide.parent().addClass('hybrid');
-                    elSize = settings.hybridHeight;
-                    $slide.css('height', elSize + 'px');
+                    elSize = settings.hybridWidth;
+                    $slide.css('width', elSize + 'px');
                 } 
                 else {
                     elSize = $el.outerWidth();
@@ -937,14 +937,8 @@
                     elSize = $children.outerHeight();
                 }
                 $slide.css('height', elSize + 'px');
-            } else if (settings.hybrid === true) {
-                if (settings.item > 1) {
-                    elSize = settings.hybridHeight;
-                } else {
-                    elSize = $children.outerHeight();
-                }
-                $slide.css('height', elSize + 'px');
-            } else {
+            } 
+            else {
                 elSize = $slide.outerWidth();
             }
             if (settings.loop === true && settings.mode === 'slide') {
