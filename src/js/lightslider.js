@@ -546,7 +546,7 @@
                     }
                 }
             },
-            move: function (ob, v) {
+            move: function (ob, v, slide) {
                 if (settings.rtl === true) {
                     v = -v;
                 }
@@ -557,10 +557,17 @@
                             '-webkit-transform': 'translate3d(0px, ' + (-v) + 'px, 0px)'
                         });
                     } else if (settings.hybrid === true) {
-                        ob.css({
-                            'transform': 'translate3d(0px, ' + (-v) + 'px, 0px)',
-                            '-webkit-transform': 'translate3d(0px, ' + (-v) + 'px, 0px)'
-                        });
+                        if(slide) {
+                            ob.css({
+                                'transform': 'translate3d(' + (-v) + 'px, 0px, 0px)',
+                                '-webkit-transform': 'translate3d(' + (-v) + 'px, 0px, 0px)',
+                            });
+                        } else {
+                            ob.css({
+                                'transform': 'translate3d(0px, ' + (-v) + 'px, 0px)',
+                                '-webkit-transform': 'translate3d(0px, ' + (-v) + 'px, 0px)'
+                            });
+                        }
                     } else {
                         ob.css({
                             'transform': 'translate3d(' + (-v) + 'px, 0px, 0px)',
@@ -601,7 +608,7 @@
                         } else if (slideValue < 0) {
                             slideValue = 0;
                         }
-                        $this.move($el, slideValue);
+                        $this.move($el, slideValue, true);
                         if (settings.loop === true && settings.mode === 'slide') {
                             if (scene >= (length - ($el.find('.clone.left').length / settings.slideMove))) {
                                 $this.resetSlide($el.find('.clone.left').length);
