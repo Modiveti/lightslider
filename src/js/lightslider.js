@@ -24,6 +24,8 @@
         adaptiveHeight: false,
         vertical: false,
         verticalHeight: 500,
+        hybrid: false,
+        hybridHeight: 500,
         vThumbWidth: 100,
         thumbItem: 10,
         pager: true,
@@ -61,10 +63,11 @@
             settings = $.extend(true, {}, defaults, options),
             settingsTemp = {},
             $el = this;
-        plugin.$el = this;
+            plugin.$el = this;
 
         if (settings.mode === 'fade') {
             settings.vertical = false;
+            settings.hybrid = false;
         }
         var $children = $el.children(),
             windowW = $(window).width(),
@@ -76,8 +79,9 @@
             elSize = 0,
             $slide = '',
             scene = 0,
-            property = (settings.vertical === true) ? 'height' : 'width',
-            gutter = (settings.vertical === true) ? 'margin-bottom' : 'margin-right',
+            property = (settings.vertical === true || settings.hybrid === true) ? 'height' : 'width',
+            galleryProperty = (settings.vertical === true) ? 'height' : 'width',
+            gutter = (settings.vertical === true || settings.hybrid === true) ? 'margin-bottom' : 'margin-right',
             slideValue = 0,
             pagerWidth = 0,
             slideWidth = 0,
@@ -235,7 +239,13 @@
                     $slide.parent().addClass('vertical');
                     elSize = settings.verticalHeight;
                     $slide.css('height', elSize + 'px');
-                } else {
+                } 
+                else if(settings.hybrid) {
+                    $slide.parent().addClass('hybrid');
+                    elSize = settings.hybridHeight;
+                    $slide.css('height', elSize + 'px');
+                } 
+                else {
                     elSize = $el.outerWidth();
                 }
                 $children.addClass('lslide');
@@ -290,12 +300,15 @@
                     if (settings.rtl === true && settings.vertical === false) {
                         gutter = 'margin-left';
                     }
+                    if (settings.rtl === true && settings.hybrid === false) {
+                        gutter = 'margin-right';
+                    }
                     if (settings.autoWidth === false) {
-                        $children.css(property, slideWidth + 'px');
+                        $children.css(galleryProperty, slideWidth + 'px');
                     }
                     $children.css(gutter, settings.slideMargin + 'px');
                     w = refresh.calWidth(false);
-                    $el.css(property, w + 'px');
+                    $el.css(galleryProperty, w + 'px');
                     if (settings.loop === true && settings.mode === 'slide') {
                         if (on === false) {
                             scene = $el.find('.clone.left').length;
@@ -317,7 +330,7 @@
                         slideValue = $this.slideValue();
                         this.move($el, slideValue);
                     }
-                    if (settings.vertical === false) {
+                    if (settings.vertical === false || settings.hybrid === false) {
                         this.setHeight($el, false);
                     }
 
@@ -380,7 +393,7 @@
                     var $cSouter = $slide.parent();
                     $cSouter.find('.lSPager').html(pagers); 
                     if (settings.gallery === true) {
-                        if (settings.vertical === true) {
+                        if (settings.vertical === true || settings.hybrid === true) {
                             // set Gallery thumbnail width
                             $cSouter.find('.lSPager').css('width', settings.vThumbWidth + 'px');
                         }
@@ -391,6 +404,9 @@
                         });
                         if (settings.vertical === true) {
                             $slide.parent().css('padding-right', (settings.vThumbWidth + settings.galleryMargin) + 'px');
+                        }
+                        if (settings.hybrid === true) {
+                            $slide.parent().css('padding-left', (settings.vThumbWidth + settings.galleryMargin) + 'px');
                         }
                         $cSouter.find('.lSPager').css(property, pagerWidth + 'px');
                     }
@@ -415,7 +431,14 @@
                         cl = 'lSGallery';
                     }
                     $slide.after('<ul class="lSPager ' + cl + '"></ul>');
-                    var gMargin = (settings.vertical) ? 'margin-left' : 'margin-top';
+                    var gMargin = '';
+                    if(settings.vertical) {
+                        gMargin = 'margin-left';
+                    } else if(settings.hybrid) {
+                        gMargin = 'margin-right';
+                    } else {
+                        gMargin = 'margin-top';
+                    }
                     $slide.parent().find('.lSPager').css(gMargin, settings.galleryMargin + 'px');
                     refresh.createPager();
                 }
@@ -533,6 +556,11 @@
                             'transform': 'translate3d(0px, ' + (-v) + 'px, 0px)',
                             '-webkit-transform': 'translate3d(0px, ' + (-v) + 'px, 0px)'
                         });
+                    } else if (settings.hybrid === true) {
+                        ob.css({
+                            'transform': 'translate3d(0px, ' + (-v) + 'px, 0px)',
+                            '-webkit-transform': 'translate3d(0px, ' + (-v) + 'px, 0px)'
+                        });
                     } else {
                         ob.css({
                             'transform': 'translate3d(' + (-v) + 'px, 0px, 0px)',
@@ -543,6 +571,10 @@
                     if (settings.vertical === true) {
                         ob.css('position', 'relative').animate({
                             top: -v + 'px'
+                        }, settings.speed, settings.easing);
+                    } else if (settings.hybrid === true) {
+                        ob.css('position', 'relative').animate({
+                            left: -v + 'px'
                         }, settings.speed, settings.easing);
                     } else {
                         ob.css('position', 'relative').animate({
@@ -761,7 +793,7 @@
                             }
                         }
                         if ($(e.target).attr('class') !== ('lSPrev') && $(e.target).attr('class') !== ('lSNext')) {
-                            startCoords = (settings.vertical === true) ? e.pageY : e.pageX;
+                            startCoords = (settings.vertical === true || settings.hybrid === true) ? e.pageY : e.pageX;
                             isDraging = true;
                             if (e.preventDefault) {
                                 e.preventDefault();
@@ -778,7 +810,7 @@
                     });
                     $(window).on('mousemove', function (e) {
                         if (isDraging) {
-                            endCoords = (settings.vertical === true) ? e.pageY : e.pageX;
+                            endCoords = (settings.vertical === true || settings.vertical === true) ? e.pageY : e.pageX;
                             $this.touchMove(endCoords, startCoords);
                         }
                     });
@@ -786,7 +818,7 @@
                         if (isDraging) {
                             $slide.find('.lightSlider').removeClass('lsGrabbing').addClass('lsGrab');
                             isDraging = false;
-                            endCoords = (settings.vertical === true) ? e.pageY : e.pageX;
+                            endCoords = (settings.vertical === true || settings.hybrid === true) ? e.pageY : e.pageX;
                             var distance = endCoords - startCoords;
                             if (Math.abs(distance) >= settings.swipeThreshold) {
                                 $(window).on('click.ls', function (e) {
@@ -832,7 +864,7 @@
                         endCoords = orig.targetTouches[0];
                         var xMovement = Math.abs(endCoords.pageX - startCoords.pageX);
                         var yMovement = Math.abs(endCoords.pageY - startCoords.pageY);
-                        if (settings.vertical === true) {
+                        if (settings.vertical === true || settings.hybrid === true) {
                             if ((yMovement * 3) > xMovement) {
                                 e.preventDefault();
                             }
@@ -852,7 +884,7 @@
                             }
                         }
                         var distance;
-                        if (settings.vertical === true) {
+                        if (settings.vertical === true || settings.hybrid === true) {
                             distance = endCoords.pageY - startCoords.pageY;
                         } else {
                             distance = endCoords.pageX - startCoords.pageX;
@@ -898,6 +930,13 @@
                     elSize = $children.outerHeight();
                 }
                 $slide.css('height', elSize + 'px');
+            } else if (settings.hybrid === true) {
+                if (settings.item > 1) {
+                    elSize = settings.hybridHeight;
+                } else {
+                    elSize = $children.outerHeight();
+                }
+                $slide.css('height', elSize + 'px');
             } else {
                 elSize = $slide.outerWidth();
             }
@@ -920,12 +959,12 @@
             if (settings.pager) {
                 refresh.createPager();
             }
-            if (settings.adaptiveHeight === true && settings.vertical === false) {
+            if (settings.adaptiveHeight === true && settings.vertical === false && settings.hybrid === false) {
                 $el.css('height', $children.eq(scene).outerHeight(true));
             }
             if (settings.adaptiveHeight === false) {
                 if (settings.mode === 'slide') {
-                    if (settings.vertical === false) {
+                    if (settings.vertical === false || settings.hybrid === false) {
                         plugin.setHeight($el, false);
                     }else{
                         plugin.auto();
@@ -1011,7 +1050,7 @@
             }
         };
         $el.mode = function (_touch) {
-            if (settings.adaptiveHeight === true && settings.vertical === false) {
+            if (settings.adaptiveHeight === true && settings.vertical === false && settings.hybrid === false) {
                 $el.css('height', $children.eq(scene).outerHeight(true));
             }
             if (on === false) {

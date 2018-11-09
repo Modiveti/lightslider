@@ -1,6 +1,6 @@
-/*! lightslider - v1.1.6 - 2016-10-25
+/*! lightslider - v1.1.6 - 2018-11-09
 * https://github.com/sachinchoolur/lightslider
-* Copyright (c) 2016 Sachin N; Licensed MIT */
+* Copyright (c) 2018 Sachin N; Licensed MIT */
 (function ($, undefined) {
     'use strict';
     var defaults = {
