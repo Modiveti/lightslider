@@ -25,7 +25,7 @@
         vertical: false,
         verticalHeight: 500,
         hybrid: false,
-        hybridWidth: 500,
+        hybridWidth: 550,
         vThumbWidth: 100,
         thumbItem: 10,
         pager: true,
@@ -670,8 +670,10 @@
                     }
                 }
                 var thumbSlide = sc * ((thumbWidth + settings.thumbMargin)) - (position);
+                console.log(thumbSlide);
                 if ((thumbSlide + elSize) > pagerWidth) {
                     thumbSlide = pagerWidth - elSize - settings.thumbMargin;
+                    // console.log(thumbSlide);
                 }
                 if (thumbSlide < 0) {
                     thumbSlide = 0;
