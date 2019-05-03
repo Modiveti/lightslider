@@ -376,6 +376,9 @@
                         } else {
                             pagers += '<li><a href="#">' + (i + 1) + '</a></li>';
                         }
+                        if ( undefined === $children.eq(i * settings.slideMove).attr('data-thumb-alt') ) {
+                            $children.eq(i * settings.slideMove).attr('data-thumb-alt','');
+                        }
                         if (settings.mode === 'slide') {
                             if ((v) >= w - elSize - settings.slideMargin) {
                                 i = i + 1;
